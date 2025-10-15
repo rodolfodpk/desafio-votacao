@@ -1,17 +1,17 @@
-# K6 Performance Testing Suite
+# K6 Performance Tests
 
-This directory contains comprehensive performance and scalability tests for the Voting System API using [k6](https://k6.io/).
+This directory contains performance tests for the Voting System API using [k6](https://k6.io/).
 
-## 🎯 Overview
+## Overview
 
-The k6 test suite validates the voting system's performance, scalability, and resilience under various load conditions. It tests the core REST API endpoints:
+Tests for the voting system's performance and load handling. It tests the core REST API endpoints:
 
 - `POST /api/agendas` - Create agenda
 - `POST /api/agendas/{agendaId}/voting-session` - Open voting session  
 - `POST /api/agendas/{agendaId}/votes` - Submit vote
 - `GET /api/agendas/{agendaId}/results` - Get voting results
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -42,7 +42,7 @@ make k6-expiration # Session expiration
 make k6-test
 ```
 
-## 📊 Test Scenarios
+## Test Scenarios
 
 ### 1. Smoke Test (`smoke-test.js`)
 **Purpose**: Basic sanity check with minimal load
@@ -132,7 +132,7 @@ make k6-duplicate
 make k6-expiration
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -162,7 +162,7 @@ The tests track custom business metrics:
 - `circuit_breaker_opens` - Circuit breaker activations
 - `database_consistency` - Database consistency checks
 
-## 📈 Performance Targets
+## Performance Targets
 
 | Metric | Target | Excellent |
 |--------|--------|-----------|
@@ -172,7 +172,7 @@ The tests track custom business metrics:
 | Concurrent users | > 100 | > 500 |
 | Error rate | < 1% | < 0.1% |
 
-## 🛡️ Resilience Testing
+## Resilience Testing
 
 The tests validate Resilience4j patterns:
 
@@ -196,7 +196,7 @@ The tests validate Resilience4j patterns:
 - Verifies timeouts trigger correctly
 - Checks resource cleanup
 
-## 📊 Reporting
+## Reporting
 
 ### HTML Reports
 ```bash
@@ -216,7 +216,7 @@ k6 run --out json=reports/load-test.json k6/scripts/load-test.js
 k6 run --out influxdb=http://localhost:8086/k6 k6/scripts/load-test.js
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -302,7 +302,7 @@ k6 run --verbose k6/scripts/smoke-test.js
 k6 run --log-level=debug k6/scripts/smoke-test.js
 ```
 
-## 🔄 Development Workflow
+## Development Workflow
 
 ### 1. Start Development Environment
 ```bash
@@ -339,7 +339,7 @@ make stop     # Stop application and database
 make clean    # Clean all artifacts
 ```
 
-## 🎯 Testing Strategy
+## Testing Strategy
 
 ### Individual Testing with Cleanup
 ```bash
@@ -353,7 +353,7 @@ make k6-test-individual
 - **`db-clean-quick`**: Fast cleanup without restarting application
 - **`db-reset`**: Full database reset with application restart
 
-## 📋 Test Checklist
+## Test Checklist
 
 Before running k6 tests, ensure:
 
@@ -364,7 +364,7 @@ Before running k6 tests, ensure:
 - [ ] Database is clean (no existing test data)
 - [ ] k6 is installed and accessible
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Always start with smoke test** - Validates basic setup
 2. **Use fresh database** - Ensures clean test environment
@@ -373,7 +373,7 @@ Before running k6 tests, ensure:
 5. **Run tests in sequence** - Start with low load, increase gradually
 6. **Document results** - Save reports for analysis
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [k6 Documentation](https://k6.io/docs/)
 - [k6 JavaScript API](https://k6.io/docs/javascript-api/)

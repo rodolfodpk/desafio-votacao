@@ -9,18 +9,18 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.2-blue?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A comprehensive voting system API built with Spring Boot, featuring agenda management, voting sessions, and real-time results.
+A voting system API built with Spring Boot, featuring agenda management, voting sessions, and results tracking.
 
 ## Features
 
 - **Agenda Management**: Create and manage voting agendas
 - **Voting Sessions**: Open and manage voting sessions with configurable duration
 - **Vote Submission**: Submit votes with CPF validation
-- **Real-time Results**: Get voting results with current status
+- **Voting Results**: Get voting results with current status
 - **CPF Validation**: Configurable CPF validation (lenient/strict modes)
 - **Concurrent Voting**: Thread-safe voting with duplicate prevention
 - **Session Expiration**: Automatic session closure with time-based validation
-- **Comprehensive Testing**: Unit tests, E2E tests, and architecture tests
+- **Testing**: Unit tests, E2E tests, and architecture tests
 
 ## Requirements
 
@@ -28,6 +28,7 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 * Maven (tested with 3.9.3)
 * PostgreSQL 17.2+ (or use Docker Compose)
 * Docker & Docker Compose (for containerized deployment)
+* k6 (for performance testing)
 
 ## API Endpoints
 
@@ -81,6 +82,9 @@ Flyway migrations are located in `src/main/resources/db/migration/` and will be 
 The easiest way to run the entire application with PostgreSQL:
 
 ```bash
+# Build the application (Testcontainers handles database for tests)
+mvn clean package
+
 # Start PostgreSQL and application
 docker-compose up
 
@@ -200,7 +204,7 @@ open target/site/jacoco/index.html
 ## CI/CD
 
 Comprehensive GitHub Actions workflows with:
-- **Java 25 Testing**: Tests on latest LTS Java 25
+- **Java 25 Testing**: Tests on Java 25
 - **Code Coverage**: JaCoCo reports generated locally
 - **Test Reporting**: Detailed JUnit XML reports
 - **Build Artifacts**: JAR files for deployment
@@ -235,7 +239,7 @@ Domain-driven design with clear separation of concerns:
 
 ### Performance Testing
 
-The project includes comprehensive k6 performance tests with 8 scenarios, all validated and working:
+The project includes 8 k6 performance test scenarios:
 
 - **✅ Smoke Test** - Basic functionality validation (100% success rate)
 - **✅ Load Test** - Normal expected load (100% success rate, 0% HTTP errors)
@@ -246,13 +250,13 @@ The project includes comprehensive k6 performance tests with 8 scenarios, all va
 - **✅ Duplicate Vote Test** - Duplicate handling (100% success rate, proper rejections)
 - **✅ Session Expiration Test** - Session expiration (100% success rate, time validation)
 
-See `k6/README.md` for detailed usage instructions.
+See [k6/README.md](k6/README.md) for detailed usage instructions.
 
 ## Notes
 
-* The code is fully tested with comprehensive test coverage
+* The code has 85.8% instruction coverage and 63.2% branch coverage
 * It includes [`ArchUnit`](https://www.archunit.org/use-cases) tests to assert basic architecture
-* It has extensive E2E tests covering all major workflows using Testcontainers
+* It has E2E tests covering major workflows using Testcontainers
 * It includes concurrent voting tests to ensure thread safety
 * Uses PostgreSQL with R2DBC for reactive, non-blocking database access
 * Flyway manages database schema migrations automatically

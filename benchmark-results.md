@@ -1,26 +1,26 @@
-# 🚀 Voting System API - Benchmark Results
+# Voting System API - Benchmark Results
 
 This document contains the latest performance benchmark results for the Voting System API, including detailed metrics, analysis, and recommendations.
 
-## 📊 Latest Test Results Summary
+## Latest Test Results Summary
 
 **Test Date**: October 15, 2025  
 **Configuration**: K6 Performance Testing Profile (Optimized)  
 **Environment**: Local Development (macOS, Java 25, PostgreSQL 17.2)
 
-### 🎯 Key Performance Metrics
+### Key Performance Metrics
 
 | Metric | Target | Latest Result | Status |
 |--------|--------|---------------|---------|
-| **All Test Success Rate** | >99% | **100%** | ✅ Perfect |
-| **Load Test Success Rate** | >95% | **100%** | ✅ Excellent |
-| **HTTP Response Time (p95)** | <500ms | **<30ms** | ✅ Excellent |
-| **Vote Submission Latency (p95)** | <500ms | **<30ms** | ✅ Excellent |
-| **Database Operation Latency** | <50ms | **<20ms (p95)** | ✅ Excellent |
-| **System Recovery** | 100% | **100%** | ✅ Perfect |
-| **Database Consistency** | 100% | **100%** | ✅ Perfect |
+| **All Test Success Rate** | >99% | **100%** | Pass |
+| **Load Test Success Rate** | >95% | **100%** | Pass |
+| **HTTP Response Time (p95)** | <500ms | **<30ms** | Pass |
+| **Vote Submission Latency (p95)** | <500ms | **<30ms** | Pass |
+| **Database Operation Latency** | <50ms | **<20ms (p95)** | Pass |
+| **System Recovery** | 100% | **100%** | Pass |
+| **Database Consistency** | 100% | **100%** | Pass |
 
-## 🔍 Detailed Test Results
+## Detailed Test Results
 
 ### Smoke Test Results (Latest Run)
 
@@ -54,17 +54,17 @@ This document contains the latest performance benchmark results for the Voting S
 - Duplicate Vote Handling: 100% correct
 ```
 
-## 🎛️ Configuration Analysis
+## Configuration Analysis
 
 ### Resilience4j Configuration (Optimized for Performance)
 
-| Component | Default Value | Optimized Value | Improvement |
-|-----------|---------------|-----------------|-------------|
-| **Circuit Breaker Threshold** | 50% | 80% | +60% more tolerant |
-| **Rate Limiter** | 50 req/sec | 2000 req/sec | +3900% capacity |
-| **Bulkhead (CPF)** | 25 concurrent | 300 concurrent | +1100% capacity |
-| **Bulkhead (Database)** | 25 concurrent | 400 concurrent | +1500% capacity |
-| **Database Pool** | 10-50 connections | 20-50 connections | Optimized |
+| Component | Default Value | Optimized Value |
+|-----------|---------------|-----------------|
+| **Circuit Breaker Threshold** | 50% | 80% |
+| **Rate Limiter** | 50 req/sec | 2000 req/sec |
+| **Bulkhead (CPF)** | 25 concurrent | 300 concurrent |
+| **Bulkhead (Database)** | 25 concurrent | 400 concurrent |
+| **Database Pool** | 10-50 connections | 20-50 connections |
 
 ### Test Profile Comparison
 
@@ -74,31 +74,31 @@ This document contains the latest performance benchmark results for the Voting S
 | **K6 Testing** | Performance | 2000 req/sec | 80% | 300-400 |
 | **Resilience Testing** | Circuit Testing | 50 req/sec | 30-40% | 10-20 |
 
-## 📈 Performance Analysis
+## Performance Analysis
 
-### ✅ Strengths
+### Results
 
-1. **Excellent Response Times**
+1. **Response Times**
    - p95 response time: 20.18ms (target: <500ms)
    - Average response time: 10.05ms
    - Database operations: 15ms p95
 
-2. **Perfect Reliability**
+2. **Reliability**
    - 100% business logic success rate
    - All functional checks passed
    - No system failures or crashes
 
-3. **Robust Duplicate Handling**
+3. **Duplicate Handling**
    - 100% correct duplicate vote detection
    - Proper HTTP 400 responses
    - No data corruption
 
-4. **Optimized Configuration**
-   - Resilience4j settings properly tuned
+4. **Configuration**
+   - Resilience4j settings tuned for testing
    - Circuit breakers configured for high load
    - Rate limiting allows high throughput
 
-### ⚠️ Areas for Improvement
+### Areas for Improvement
 
 1. **Conservative Throughput**
    - Current: 11.66 req/s (smoke test limitation)
@@ -109,49 +109,49 @@ This document contains the latest performance benchmark results for the Voting S
    - Smoke test: 5 VUs only
    - **Recommendation**: Run stress tests with 200+ VUs
 
-## 🧪 Test Scenarios Status
+## Test Scenarios Status
 
 | Test Scenario | Status | Last Run | Duration | VUs | Results |
 |---------------|--------|----------|----------|-----|---------|
-| **Smoke Test** | ✅ Passed | Oct 15, 2025 | 1m | 5 | 100% success, 0% errors |
-| **Load Test** | ✅ Passed | Oct 15, 2025 | 9m | 50 | 100% success, 0% HTTP errors |
-| **Stress Test** | ✅ Passed | Oct 15, 2025 | 14m | 200-300 | 100% success, 511 votes |
-| **Spike Test** | ✅ Passed | Oct 15, 2025 | 5.5m | 10-200 | 100% success, spike recovery |
-| **Concurrent Test** | ✅ Passed | Oct 15, 2025 | 2m | 100 | 100% success, 518 votes |
-| **Mixed Workload** | ✅ Passed | Oct 15, 2025 | 10m | 30 | 100% success, realistic patterns |
-| **Duplicate Vote Test** | ✅ Passed | Oct 15, 2025 | 30s | 3 | 100% success, proper rejections |
-| **Session Expiration Test** | ✅ Passed | Oct 15, 2025 | 2m | 2 | 100% success, time validation |
+| **Smoke Test** | Passed | Oct 15, 2025 | 1m | 5 | 100% success, 0% errors |
+| **Load Test** | Passed | Oct 15, 2025 | 9m | 50 | 100% success, 0% HTTP errors |
+| **Stress Test** | Passed | Oct 15, 2025 | 14m | 200-300 | 100% success, 511 votes |
+| **Spike Test** | Passed | Oct 15, 2025 | 5.5m | 10-200 | 100% success, spike recovery |
+| **Concurrent Test** | Passed | Oct 15, 2025 | 2m | 100 | 100% success, 518 votes |
+| **Mixed Workload** | Passed | Oct 15, 2025 | 10m | 30 | 100% success, realistic patterns |
+| **Duplicate Vote Test** | Passed | Oct 15, 2025 | 30s | 3 | 100% success, proper rejections |
+| **Session Expiration Test** | Passed | Oct 15, 2025 | 2m | 2 | 100% success, time validation |
 
-## 🚀 All Tests Completed Successfully!
+## All Tests Completed Successfully!
 
-### ✅ Comprehensive Test Suite Results
+### Test Suite Results
 ```bash
 # All 8 k6 tests validated and working
 make k6-test-individual  # Run each test individually with cleanup
 make k6-test            # Run all tests in sequence
 ```
 
-### 🎯 Key Achievements
+### Key Achievements
 - **All 8 test scenarios passing** with 100% success rates
 - **Load test session management fixed** - eliminated 409 conflicts
 - **Database cleanup working** - prevents resource exhaustion
 - **Resilience4j optimizations applied** - better performance under load
 - **Systematic testing approach** - individual validation with proper error analysis
 
-## 📋 Performance Targets vs Results
+## Performance Targets vs Results
 
 | Test Type | Target | Current Result | Gap Analysis |
 |-----------|--------|----------------|--------------|
-| **Smoke Test** | 100% success | ✅ 100% | Perfect |
-| **Load Test** | 95% success, 0% HTTP errors | ✅ 100% success, 0% errors | Exceeds target |
-| **Stress Test** | <5% error at peak | ✅ 0% errors, 511 votes | Perfect |
-| **Spike Test** | <10% error during spike | ✅ 0% errors, spike recovery | Perfect |
-| **Concurrent Test** | 100% database consistency | ✅ 100% consistency, 518 votes | Perfect |
-| **Mixed Workload** | 99% success rate | ✅ 100% success, realistic patterns | Exceeds target |
-| **Duplicate Vote Test** | Proper rejections | ✅ 100% success, 39.91% expected errors | Perfect |
-| **Session Expiration Test** | Time validation | ✅ 100% success, 47.05% expected errors | Perfect |
+| **Smoke Test** | 100% success | 100% | Meets target |
+| **Load Test** | 95% success, 0% HTTP errors | 100% success, 0% errors | Exceeds target |
+| **Stress Test** | <5% error at peak | 0% errors, 511 votes | Meets target |
+| **Spike Test** | <10% error during spike | 0% errors, spike recovery | Meets target |
+| **Concurrent Test** | 100% database consistency | 100% consistency, 518 votes | Meets target |
+| **Mixed Workload** | 99% success rate | 100% success, realistic patterns | Exceeds target |
+| **Duplicate Vote Test** | Proper rejections | 100% success, 39.91% expected errors | Meets target |
+| **Session Expiration Test** | Time validation | 100% success, 47.05% expected errors | Meets target |
 
-## 🔧 Configuration Recommendations
+## Configuration Recommendations
 
 ### For Production Deployment
 
@@ -174,7 +174,7 @@ make k6-test            # Run all tests in sequence
    - Set up alerts for circuit breaker activations
    - Monitor database connection pool usage
 
-## 📊 Historical Results
+## Historical Results
 
 ### October 15, 2025 - Initial Optimization
 - **Issue**: 19.97% HTTP failure rate due to restrictive Resilience4j defaults
@@ -194,27 +194,27 @@ make k6-test            # Run all tests in sequence
 - Bulkhead: 300-400 concurrent calls (optimized)
 - Result: 100% success rate, excellent performance
 
-## 🎯 Success Criteria Met
+## Success Criteria Met
 
-✅ **Functional Requirements**
+**Functional Requirements**
 - All API endpoints working correctly
 - Duplicate vote prevention working
 - Session management functional
-- Real-time results available
+- Results available
 
-✅ **Performance Requirements**
+**Performance Requirements**
 - Response times well under targets
 - No system crashes or failures
 - Proper error handling
 - Resource utilization optimized
 
-✅ **Reliability Requirements**
+**Reliability Requirements**
 - 100% business logic success rate
 - Proper resilience pattern implementation
 - Circuit breaker configuration working
 - Rate limiting functional
 
-## 📝 Test Execution Log
+## Test Execution Log
 
 ```bash
 # Latest comprehensive test run - All 8 tests validated
@@ -233,7 +233,7 @@ Results Summary:
 - Session expiration test: Time validation working (47.05% expected errors)
 ```
 
-## 🔄 Continuous Monitoring
+## Continuous Monitoring
 
 ### Recommended Monitoring Setup
 
