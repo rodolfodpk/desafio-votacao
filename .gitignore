@@ -203,4 +203,5 @@ test-output/
 
 # Performance testing
 k6-results/
+k6-results.json
 
