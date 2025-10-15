@@ -6,19 +6,28 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17.2
+        env:
+          POSTGRES_DB: votacao
+          POSTGRES_USER: votacao
+          POSTGRES_PASSWORD: votacao
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Java 25 (Temurin)
       uses: actions/setup-java@v4
@@ -28,23 +37,5 @@ jobs:
         cache: 'maven'  # Caches ~/.m2/repository
 
     - name: Build with Maven
-      run: mvn -B clean package --file pom.xml
-
-    - name: Generate JaCoCo Badge
-      uses: cicirello/jacoco-badge-generator@v2
-      with:
-        jacoco-csv-file: target/site/jacoco/jacoco.csv
-        badges-directory: .github/badges
-        generate-branches-badge: true
-        generate-coverage-badge: true
-      continue-on-error: true
-
-    - name: Commit Badges
-      if: success() || failure()
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .github/badges/ || true
-        git diff --staged --quiet || git commit -m "Update coverage badges"
-        git push || echo "No changes to push"
+      run: mvn -B package --file pom.xml
 
