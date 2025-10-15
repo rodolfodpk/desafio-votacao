@@ -1,7 +1,5 @@
     # Voting System API
 
-[![Tests](https://github.com/rodolfo/desafio-votacao/actions/workflows/tests.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/tests.yml)
-[![Build](https://github.com/rodolfo/desafio-votacao/actions/workflows/build.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/build.yml)
 [![CI](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
 
 A comprehensive voting system API built with Spring Boot, featuring agenda management, voting sessions, and real-time results.
