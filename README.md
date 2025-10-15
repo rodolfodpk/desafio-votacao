@@ -3,7 +3,6 @@
 [![Tests](https://github.com/rodolfo/desafio-votacao/actions/workflows/tests.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/tests.yml)
 [![Build](https://github.com/rodolfo/desafio-votacao/actions/workflows/build.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/build.yml)
 [![CI](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/rodolfo/desafio-votacao/branch/main/graph/badge.svg)](https://codecov.io/gh/rodolfo/desafio-votacao)
 
 A comprehensive voting system API built with Spring Boot, featuring agenda management, voting sessions, and real-time results.
 
@@ -73,6 +72,9 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 # Or use the convenience script
 ./generate-coverage.sh
 
+# Generate coverage badge locally
+./generate-coverage-badge.sh
+
 # View coverage report
 open target/site/jacoco/index.html
 ```
@@ -82,7 +84,7 @@ open target/site/jacoco/index.html
 
 Comprehensive GitHub Actions workflows with:
 - **Java 25 Testing**: Tests on latest LTS Java 25
-- **Code Coverage**: JaCoCo reports with Codecov integration
+- **Code Coverage**: JaCoCo reports generated locally
 - **Test Reporting**: Detailed JUnit XML reports
 - **Build Artifacts**: JAR files for deployment
 
