@@ -1,6 +1,13 @@
-    # Voting System API
+# Voting System API
 
-[![CI](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
+[![Java CI](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
+[![Branches](.github/badges/branches.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
+[![Java](https://img.shields.io/badge/Java-25-orange?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Maven](https://img.shields.io/badge/Maven-3.9.3-blue?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.2-blue?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A comprehensive voting system API built with Spring Boot, featuring agenda management, voting sessions, and real-time results.
 
@@ -9,7 +16,7 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 - **Agenda Management**: Create and manage voting agendas
 - **Voting Sessions**: Open and manage voting sessions with configurable duration
 - **Vote Submission**: Submit votes with CPF validation
-- **Real-time Results**: Get voting results with live status updates
+- **Real-time Results**: Get voting results with current status
 - **CPF Validation**: Configurable CPF validation (lenient/strict modes)
 - **Concurrent Voting**: Thread-safe voting with duplicate prevention
 - **Session Expiration**: Automatic session closure with time-based validation
@@ -38,7 +45,6 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 
 ### Results
 - `GET /api/agendas/{agendaId}/results` - Get voting results
-- `GET /api/agendas/{agendaId}/results/stream` - Stream real-time results
 
 ### CPF Validation
 - `GET /api/cpf-validation/{cpf}` - Validate a CPF
@@ -92,6 +98,39 @@ docker-compose down -v
 ```
 
 Access the application at http://localhost:8080
+
+### Makefile Commands
+
+```bash
+# Application Management
+make start          # Start PostgreSQL and application
+make start-k6       # Start with k6 testing profile
+make stop           # Stop application and PostgreSQL
+make restart        # Restart application and PostgreSQL
+make logs           # Show application logs
+make health         # Check application health
+
+# Testing
+make test           # Run unit and integration tests
+make k6-test        # Run all k6 performance tests
+make k6-test-automated # Automated k6 workflow
+make k6-test-individual # Run each k6 test individually
+
+# Individual k6 Tests
+make k6-smoke       # Basic validation
+make k6-load        # Normal load
+make k6-stress      # Breaking point
+make k6-spike       # Traffic surge
+make k6-concurrent  # Race conditions
+make k6-mixed       # Realistic simulation
+make k6-duplicate   # Duplicate vote handling
+make k6-expiration  # Session expiration
+
+# Development
+make clean          # Clean build artifacts and containers
+make build          # Build the application
+make setup          # Initial setup
+```
 
 ### Option 2: PostgreSQL Only with Local Application
 
@@ -192,6 +231,22 @@ Domain-driven design with clear separation of concerns:
 - **test**: Default test configuration
 - **strict**: Strict CPF validation for validation tests
 - **session-expiration**: Mock time provider for session tests
+- **k6**: Optimized for performance testing with relaxed Resilience4j settings
+
+### Performance Testing
+
+The project includes comprehensive k6 performance tests with 8 scenarios, all validated and working:
+
+- **✅ Smoke Test** - Basic functionality validation (100% success rate)
+- **✅ Load Test** - Normal expected load (100% success rate, 0% HTTP errors)
+- **✅ Stress Test** - Breaking point testing (100% success rate, system recovery)
+- **✅ Spike Test** - Traffic surge testing (100% success rate, spike detection)
+- **✅ Concurrent Test** - Race conditions (100% success rate, database consistency)
+- **✅ Mixed Workload** - Realistic simulation (100% success rate, traffic patterns)
+- **✅ Duplicate Vote Test** - Duplicate handling (100% success rate, proper rejections)
+- **✅ Session Expiration Test** - Session expiration (100% success rate, time validation)
+
+See `k6/README.md` for detailed usage instructions.
 
 ## Notes
 

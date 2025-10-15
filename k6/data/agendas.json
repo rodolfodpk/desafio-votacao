@@ -1,0 +1,63 @@
+{
+  "testAgendas": [
+    {
+      "title": "Presidential Election 2024",
+      "description": "Vote for the next president of the country"
+    },
+    {
+      "title": "Municipal Budget Approval",
+      "description": "Approve the municipal budget for 2024"
+    },
+    {
+      "title": "School Infrastructure Project",
+      "description": "Vote on the new school infrastructure project"
+    },
+    {
+      "title": "Environmental Protection Law",
+      "description": "Vote on the new environmental protection legislation"
+    },
+    {
+      "title": "Public Transportation Expansion",
+      "description": "Decide on expanding public transportation network"
+    },
+    {
+      "title": "Healthcare System Reform",
+      "description": "Vote on healthcare system improvements"
+    },
+    {
+      "title": "Digital Government Initiative",
+      "description": "Approve digital transformation of government services"
+    },
+    {
+      "title": "Sports Complex Construction",
+      "description": "Vote on building a new sports complex"
+    },
+    {
+      "title": "Tax Reform Proposal",
+      "description": "Decide on the new tax reform legislation"
+    },
+    {
+      "title": "Education System Modernization",
+      "description": "Vote on modernizing the education system"
+    }
+  ],
+  "voteChoices": ["Yes", "No"],
+  "sessionDurations": [1, 2, 5, 10, 30],
+  "testScenarios": {
+    "highTraffic": {
+      "agendaCount": 3,
+      "expectedVotes": 1000,
+      "duration": "5m"
+    },
+    "normalTraffic": {
+      "agendaCount": 5,
+      "expectedVotes": 500,
+      "duration": "10m"
+    },
+    "lowTraffic": {
+      "agendaCount": 2,
+      "expectedVotes": 100,
+      "duration": "15m"
+    }
+  }
+}

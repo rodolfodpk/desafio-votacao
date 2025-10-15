@@ -4,7 +4,6 @@ import com.rdpk.features.session.repository.VotingSessionRepository;
 import com.rdpk.features.voting.domain.Vote;
 import com.rdpk.features.voting.domain.VoteChoice;
 import com.rdpk.features.voting.repository.VoteRepository;
-import com.rdpk.features.voting.results.StreamResultsHandler;
 import com.rdpk.exception.VotingException;
 import com.rdpk.features.voting.cpfvalidation.CpfValidationService;
 import com.rdpk.infrastructure.time.TimeProvider;
@@ -18,18 +17,15 @@ public class SubmitVoteHandler {
     private final VoteRepository voteRepository;
     private final VotingSessionRepository sessionRepository;
     private final CpfValidationService cpfValidationService;
-    private final StreamResultsHandler streamResultsHandler;
     private final TimeProvider timeProvider;
 
     public SubmitVoteHandler(VoteRepository voteRepository,
                             VotingSessionRepository sessionRepository,
                             CpfValidationService cpfValidationService,
-                            StreamResultsHandler streamResultsHandler,
                             TimeProvider timeProvider) {
         this.voteRepository = voteRepository;
         this.sessionRepository = sessionRepository;
         this.cpfValidationService = cpfValidationService;
-        this.streamResultsHandler = streamResultsHandler;
         this.timeProvider = timeProvider;
     }
 
@@ -77,12 +73,10 @@ public class SubmitVoteHandler {
                     }
                     
                     // Vote doesn't exist, proceed with save
-                    return voteRepository.save(newVote)
-                            .flatMap(savedVote -> {
-                                // This is a new vote, publish event for real-time streaming
-                                streamResultsHandler.publishVoteEvent(savedVote);
-                                return Mono.just(savedVote);
-                            });
-                });
+                    return voteRepository.save(newVote);
+                })
+                .onErrorResume(org.springframework.dao.DuplicateKeyException.class, _ -> 
+                    Mono.error(new VotingException("CPF already voted for this agenda", HttpStatus.BAD_REQUEST))
+                );
     }
 }

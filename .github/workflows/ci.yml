@@ -22,5 +22,21 @@ jobs:
         cache: 'maven'  # Caches ~/.m2/repository
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B clean package --file pom.xml
+
+    - name: Generate JaCoCo Badge
+      uses: cicirello/jacoco-badge-generator@v2
+      with:
+        jacoco-csv-file: target/site/jacoco/jacoco.csv
+        badges-directory: .github/badges
+        generate-branches-badge: true
+        generate-coverage-badge: true
+
+    - name: Commit Badges
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .github/badges/
+        git diff --staged --quiet || git commit -m "Update coverage badges"
+        git push
 

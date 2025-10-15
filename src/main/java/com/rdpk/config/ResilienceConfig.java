@@ -1,42 +1,22 @@
 package com.rdpk.config;
 
-import io.github.resilience4j.bulkhead.BulkheadRegistry;
-import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
-import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
-import io.github.resilience4j.retry.RetryRegistry;
-import io.github.resilience4j.timelimiter.TimeLimiterRegistry;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Resilience4j configuration for fault tolerance patterns.
- * Provides registries for circuit breakers, retries, rate limiters, bulkheads, and time limiters.
+ * Resilience4j configuration is handled by Spring Boot's auto-configuration.
+ * Configuration is loaded from application properties files (application.properties, application-k6.properties, etc.).
+ * 
+ * The Resilience4j Spring Boot starter automatically creates and configures:
+ * - CircuitBreakerRegistry
+ * - RetryRegistry  
+ * - TimeLimiterRegistry
+ * - BulkheadRegistry
+ * - RateLimiterRegistry
+ * 
+ * Based on the properties defined in the application properties files.
  */
 @Configuration
 public class ResilienceConfig {
-    
-    @Bean
-    public CircuitBreakerRegistry circuitBreakerRegistry() {
-        return CircuitBreakerRegistry.ofDefaults();
-    }
-    
-    @Bean
-    public RetryRegistry retryRegistry() {
-        return RetryRegistry.ofDefaults();
-    }
-    
-    @Bean
-    public TimeLimiterRegistry timeLimiterRegistry() {
-        return TimeLimiterRegistry.ofDefaults();
-    }
-    
-    @Bean
-    public BulkheadRegistry bulkheadRegistry() {
-        return BulkheadRegistry.ofDefaults();
-    }
-    
-    @Bean
-    public RateLimiterRegistry rateLimiterRegistry() {
-        return RateLimiterRegistry.ofDefaults();
-    }
+    // Removed custom bean definitions to allow Spring Boot auto-configuration
+    // to handle Resilience4j configuration from properties files
 }
