@@ -31,6 +31,9 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
         
+    - name: Verify Java version
+      run: java -version
+        
     - name: Make gradlew executable
       run: chmod +x mvnw
       
