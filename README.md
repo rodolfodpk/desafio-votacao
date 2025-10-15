@@ -77,66 +77,7 @@ Flyway migrations are located in `src/main/resources/db/migration/` and will be 
 
 ## Running
 
-### Option 1: Docker Compose (Recommended)
-
-The easiest way to run the entire application with PostgreSQL:
-
-```bash
-# Build the application (Testcontainers handles database for tests)
-mvn clean package
-
-# Start PostgreSQL and application
-docker-compose up
-
-# Or run in detached mode
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop all services
-docker-compose down
-
-# Stop and remove volumes (clean slate)
-docker-compose down -v
-```
-
-Access the application at http://localhost:8080
-
-### Makefile Commands
-
-```bash
-# Application Management
-make start          # Start PostgreSQL and application
-make start-k6       # Start with k6 testing profile
-make stop           # Stop application and PostgreSQL
-make restart        # Restart application and PostgreSQL
-make logs           # Show application logs
-make health         # Check application health
-
-# Testing
-make test           # Run unit and integration tests
-make k6-test        # Run all k6 performance tests
-make k6-test-automated # Automated k6 workflow
-make k6-test-individual # Run each k6 test individually
-
-# Individual k6 Tests
-make k6-smoke       # Basic validation
-make k6-load        # Normal load
-make k6-stress      # Breaking point
-make k6-spike       # Traffic surge
-make k6-concurrent  # Race conditions
-make k6-mixed       # Realistic simulation
-make k6-duplicate   # Duplicate vote handling
-make k6-expiration  # Session expiration
-
-# Development
-make clean          # Clean build artifacts and containers
-make build          # Build the application
-make setup          # Initial setup
-```
-
-### Option 2: PostgreSQL Only with Local Application
+### PostgreSQL Only with Local Application
 
 Run PostgreSQL in Docker and the application locally for development:
 
@@ -148,30 +89,7 @@ docker-compose up postgres
 ./mvnw spring-boot:run
 ```
 
-### Option 3: Local PostgreSQL
-
-If you have PostgreSQL installed locally:
-
-1. Create the database:
-   ```bash
-   psql -U postgres -c "CREATE DATABASE votacao;"
-   psql -U postgres -c "CREATE USER votacao WITH PASSWORD 'votacao';"
-   psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE votacao TO votacao;"
-   ```
-
-2. Update `src/main/resources/application.properties` if your PostgreSQL credentials differ
-
-3. Run the application:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-
-### Accessing the API
-
-Once running, open the Swagger UI in your browser:
-- http://localhost:8080/webjars/swagger-ui/index.html
-
-Then play with the swagger-ui to test the voting system.
+Access the API at http://localhost:8080/webjars/swagger-ui/index.html
 
 ### Running Tests
 
