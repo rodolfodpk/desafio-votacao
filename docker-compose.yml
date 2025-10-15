@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17.2
+    container_name: votacao-postgres
+    environment:
+      POSTGRES_DB: votacao
+      POSTGRES_USER: votacao
+      POSTGRES_PASSWORD: votacao
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U votacao"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - votacao-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: votacao-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/votacao
+      SPRING_R2DBC_USERNAME: votacao
+      SPRING_R2DBC_PASSWORD: votacao
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/votacao
+      SPRING_FLYWAY_USER: votacao
+      SPRING_FLYWAY_PASSWORD: votacao
+    ports:
+      - "8080:8080"
+    networks:
+      - votacao-network
+
+volumes:
+  postgres_data:
+
+networks:
+  votacao-network:
+    driver: bridge
+

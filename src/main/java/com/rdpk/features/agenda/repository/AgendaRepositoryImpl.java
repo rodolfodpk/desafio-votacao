@@ -1,45 +1,42 @@
 package com.rdpk.features.agenda.repository;
 
 import com.rdpk.features.agenda.domain.Agenda;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-
 @Repository
 public class AgendaRepositoryImpl implements AgendaRepository {
 
-    private final ConcurrentHashMap<Long, Agenda> agendas = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final R2dbcEntityTemplate template;
+
+    public AgendaRepositoryImpl(R2dbcEntityTemplate template) {
+        this.template = template;
+    }
 
     @Override
     public Mono<Agenda> save(Agenda agenda) {
         if (agenda.id() == null) {
-            Long newId = idGenerator.getAndIncrement();
-            Agenda newAgenda = new Agenda(newId, agenda.title(), agenda.description(), agenda.createdAt());
-            agendas.put(newId, newAgenda);
-            return Mono.just(newAgenda);
+            return template.insert(Agenda.class)
+                    .using(agenda);
         } else {
-            agendas.put(agenda.id(), agenda);
-            return Mono.just(agenda);
+            return template.update(agenda);
         }
     }
 
     @Override
     public Mono<Agenda> findById(Long id) {
-        return Mono.justOrEmpty(agendas.get(id));
+        return template.selectOne(
+                Query.query(Criteria.where("id").is(id)),
+                Agenda.class
+        );
     }
 
     @Override
     public Flux<Agenda> findAll() {
-        return Flux.fromIterable(agendas.values());
-    }
-    
-    // Method for test cleanup
-    public void clear() {
-        agendas.clear();
-        idGenerator.set(1);
+        return template.select(Agenda.class).all();
     }
 }

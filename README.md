@@ -19,6 +19,8 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 
 * Java 25
 * Maven (tested with 3.9.3)
+* PostgreSQL 17.2+ (or use Docker Compose)
+* Docker & Docker Compose (for containerized deployment)
 
 ## API Endpoints
 
@@ -41,27 +43,105 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 ### CPF Validation
 - `GET /api/cpf-validation/{cpf}` - Validate a CPF
 
+## Database
+
+The application uses PostgreSQL with R2DBC for reactive database access and Flyway for schema migrations.
+
+### Database Schema
+
+Flyway migrations are located in `src/main/resources/db/migration/` and will be automatically applied on startup:
+
+- **V1__create_agendas_table.sql**: Creates the agendas table
+- **V2__create_voting_sessions_table.sql**: Creates the voting_sessions table
+- **V3__create_votes_table.sql**: Creates the votes table with unique constraint
+
+### Flyway Management
+
+```bash
+# Check migration status
+./mvnw flyway:info
+
+# Validate migrations
+./mvnw flyway:validate
+
+# Clean database (WARNING: destructive)
+./mvnw flyway:clean
+```
+
 ## Running
 
-### Local Development
+### Option 1: Docker Compose (Recommended)
 
-1. On terminal, run:
-    ```bash
-        ./mvnw clean spring-boot:run
-    ``` 
-2. On browser, open: http://localhost:8080/webjars/swagger-ui/index.html
-3. Then play with the swagger-ui in order to test the voting system
+The easiest way to run the entire application with PostgreSQL:
+
+```bash
+# Start PostgreSQL and application
+docker-compose up
+
+# Or run in detached mode
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (clean slate)
+docker-compose down -v
+```
+
+Access the application at http://localhost:8080
+
+### Option 2: PostgreSQL Only with Local Application
+
+Run PostgreSQL in Docker and the application locally for development:
+
+```bash
+# Start only PostgreSQL
+docker-compose up postgres
+
+# In another terminal, run the application
+./mvnw spring-boot:run
+```
+
+### Option 3: Local PostgreSQL
+
+If you have PostgreSQL installed locally:
+
+1. Create the database:
+   ```bash
+   psql -U postgres -c "CREATE DATABASE votacao;"
+   psql -U postgres -c "CREATE USER votacao WITH PASSWORD 'votacao';"
+   psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE votacao TO votacao;"
+   ```
+
+2. Update `src/main/resources/application.properties` if your PostgreSQL credentials differ
+
+3. Run the application:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+
+### Accessing the API
+
+Once running, open the Swagger UI in your browser:
+- http://localhost:8080/webjars/swagger-ui/index.html
+
+Then play with the swagger-ui to test the voting system.
 
 ### Running Tests
 
+**Note**: E2E tests use Testcontainers to spin up PostgreSQL automatically. Docker must be running.
+
 ```bash
-# Run all tests
+# Run all tests (includes Testcontainers)
 ./mvnw test
 
 # Run only unit tests
 ./mvnw test -Dtest="!*E2eTest"
 
-# Run only E2E tests
+# Run only E2E tests (requires Docker)
 ./mvnw test -Dtest="*E2eTest"
 
 # Generate coverage report
@@ -117,6 +197,15 @@ Domain-driven design with clear separation of concerns:
 
 * The code is fully tested with comprehensive test coverage
 * It includes [`ArchUnit`](https://www.archunit.org/use-cases) tests to assert basic architecture
-* It has extensive E2E tests covering all major workflows
+* It has extensive E2E tests covering all major workflows using Testcontainers
 * It includes concurrent voting tests to ensure thread safety
-* For production deployment, consider adding caching, circuit breakers, rate limiting, logging, database persistence, and observability
+* Uses PostgreSQL with R2DBC for reactive, non-blocking database access
+* Flyway manages database schema migrations automatically
+* E2E tests run against real PostgreSQL instances via Testcontainers
+* For production deployment, consider adding:
+  - Connection pooling tuning
+  - Database indexing optimization
+  - Caching layer (Redis)
+  - Circuit breakers and rate limiting
+  - Enhanced logging and observability
+  - Backup and disaster recovery strategies
