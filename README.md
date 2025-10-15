@@ -241,16 +241,16 @@ Domain-driven design with clear separation of concerns:
 
 The project includes 8 k6 performance test scenarios:
 
-- **✅ Smoke Test** - Basic functionality validation (100% success rate)
-- **✅ Load Test** - Normal expected load (100% success rate, 0% HTTP errors)
-- **✅ Stress Test** - Breaking point testing (100% success rate, system recovery)
-- **✅ Spike Test** - Traffic surge testing (100% success rate, spike detection)
-- **✅ Concurrent Test** - Race conditions (100% success rate, database consistency)
-- **✅ Mixed Workload** - Realistic simulation (100% success rate, traffic patterns)
-- **✅ Duplicate Vote Test** - Duplicate handling (100% success rate, proper rejections)
-- **✅ Session Expiration Test** - Session expiration (100% success rate, time validation)
+- **Smoke Test** - Basic functionality validation
+- **Load Test** - Normal expected load simulation
+- **Stress Test** - Breaking point testing
+- **Spike Test** - Traffic surge testing
+- **Concurrent Test** - Race conditions and database consistency
+- **Mixed Workload** - Realistic production simulation
+- **Duplicate Vote Test** - Duplicate vote handling
+- **Session Expiration Test** - Session expiration validation
 
-See [k6/README.md](k6/README.md) for detailed usage instructions.
+See [k6/README.md](k6/README.md) for detailed usage instructions and [benchmark-results.md](benchmark-results.md) for test results.
 
 ## Notes
 
