@@ -1,0 +1,46 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test results
+test-results/
+test-output/
+
+# Documentation
+README.md
+HELP.md
+LICENSE
+
+# Performance testing
+k6-results/
+
+# Environment files
+.env
+.env.*
+
+# Build artifacts (will be copied from builder stage)
+*.jar
+*.war
