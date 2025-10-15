@@ -1,8 +1,8 @@
 # Voting System API
 
-[![Java CI](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml/badge.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
-[![Coverage](.github/badges/jacoco.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
-[![Branches](.github/badges/branches.svg)](https://github.com/rodolfo/desafio-votacao/actions/workflows/ci.yml)
+[![Java CI](https://github.com/rodolfodpk/desafio-votacao/actions/workflows/ci.yml/badge.svg)](https://github.com/rodolfodpk/desafio-votacao/actions/workflows/ci.yml)
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/rodolfodpk/desafio-votacao/actions/workflows/ci.yml)
+[![Branches](.github/badges/branches.svg)](https://github.com/rodolfodpk/desafio-votacao/actions/workflows/ci.yml)
 [![Java](https://img.shields.io/badge/Java-25-orange?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Maven](https://img.shields.io/badge/Maven-3.9.3-blue?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
