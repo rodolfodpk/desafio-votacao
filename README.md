@@ -261,10 +261,3 @@ See [k6/README.md](k6/README.md) for detailed usage instructions.
 * Uses PostgreSQL with R2DBC for reactive, non-blocking database access
 * Flyway manages database schema migrations automatically
 * E2E tests run against real PostgreSQL instances via Testcontainers
-* For production deployment, consider adding:
-  - Connection pooling tuning
-  - Database indexing optimization
-  - Caching layer (Redis)
-  - Circuit breakers and rate limiting
-  - Enhanced logging and observability
-  - Backup and disaster recovery strategies
