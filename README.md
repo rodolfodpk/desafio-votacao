@@ -90,7 +90,7 @@ docker run -p 8080:8080 voting-system
 ## CI/CD
 
 Comprehensive GitHub Actions workflows with:
-- **Multi-JDK Testing**: Tests on Java 21 and 25
+- **Java 25 Testing**: Tests on latest LTS Java 25
 - **Code Coverage**: JaCoCo reports with Codecov integration
 - **Docker Support**: Automated image building and pushing
 - **Security Scanning**: OWASP dependency vulnerability scanning
