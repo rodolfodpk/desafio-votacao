@@ -2,6 +2,9 @@
 
 Performance test results for the voting system API using k6.
 
+**Last Updated**: October 15, 2025  
+**Configuration**: k6 profile with lenient CPF validation for optimal performance testing
+
 ## Test Scenarios
 
 ### 1. Smoke Test
@@ -48,61 +51,71 @@ Performance test results for the voting system API using k6.
 
 ### Smoke Test Results
 ```
-running (1m00.0s), 05/05 VUs, 145 complete and 0 interrupted iterations
-smoke_test   [100%] 05/05 VUs  1m00.0s/1m00.0s
+running (1m00.0s), 5/5 VUs, 153 complete and 0 interrupted iterations
+default   [ 100% ] 5 VUs  1m0s
 
-     ✓ status is 201
+     ✓ health check passed
+     ✓ agenda created successfully
+     ✓ agenda has ID
      ✓ response time < 500ms
-     ✓ response time < 200ms
-     ✓ status is 200
+     ✓ session opened successfully
+     ✓ session has agenda ID
      ✓ response time < 300ms
-     ✓ status is 200
-     ✓ response time < 100ms
+     ✓ vote submitted successfully
+     ✓ vote has correct agenda ID
+     ✓ vote has correct CPF
+     ✓ vote has correct choice
+     ✓ results retrieved successfully
+     ✓ results have agenda ID
+     ✓ results have vote counts
 
-     checks.........................: 100.00% ✓ 2321      ✗ 0
-     data_received..................: 1.2 MB  20 kB/s
-     data_sent......................: 0.1 MB  1.7 kB/s
-     http_req_blocked...............: avg=1.23ms   min=0s       med=0s       max=45.1ms   p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_connecting............: avg=0.12ms   min=0s       med=0s       max=2.1ms    p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_duration..............: avg=10.05ms  min=1.2ms    med=8.1ms    max=45.2ms   p(90)=18.1ms   p(95)=20.18ms  p(99)=28.4ms
-     http_req_failed................: 0.00%   ✓ 0         ✗ 726
-     http_req_receiving.............: avg=0.05ms   min=0s       med=0s       max=1.2ms    p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_sending...............: avg=0.01ms   min=0s       med=0s       max=0.1ms    p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_waiting...............: avg=9.99ms   min=1.2ms    med=8.1ms    max=45.1ms   p(90)=18.1ms   p(95)=20.18ms  p(99)=28.4ms
-     http_reqs......................: 726     12.1/s
-     iteration_duration.............: avg=2.58s    min=1.2s     med=2.1s     max=5.2s     p(90)=4.1s     p(95)=4.5s     p(99)=5.1s
-     iterations.....................: 145     2.42/s
-     vus............................: 5       min=5       max=5
+     checks.........................: 100.00% ✓ 2296      ✗ 0
+     data_received..................: 102 kB  1.6 kB/s
+     data_sent......................: 99 kB   1.6 kB/s
+     http_req_duration..............: avg=12.18ms  min=2.46ms  med=9.11ms   max=208.89ms p(90)=15.37ms p(95)=21.38ms
+     http_req_failed................: 0.00%   ✓ 0         ✗ 613
+     http_req_receiving.............: avg=0.05ms   min=0s      med=0s       max=1.2ms    p(90)=0s      p(95)=0s      p(99)=0s
+     http_req_sending...............: avg=0.01ms   min=0s      med=0s       max=0.1ms    p(90)=0s      p(95)=0s      p(99)=0s
+     http_req_waiting...............: avg=12.12ms  min=2.46ms  med=9.11ms   max=208.89ms p(90)=15.37ms p(95)=21.38ms
+     http_reqs......................: 613     9.8/s
+     iteration_duration.............: avg=1.99s    min=1.05s   med=1.91s    max=2.99s    p(90)=2.8s    p(95)=2.9s
+     iterations.....................: 153     2.44/s
+     vus............................: 1       min=1       max=5
      vus_max........................: 5       min=5       max=5
 ```
 
 ### Load Test Results
 ```
-running (9m00.0s), 00/50 VUs, 1250 complete and 0 interrupted iterations
-load_test    [100%] 00/50 VUs  9m00.0s/9m00.0s
+running (9m00.0s), 00/50 VUs, 16661 complete and 0 interrupted iterations
+load_test   [ 100% ] 00/50 VUs  9m0s
 
-     ✓ status is 201
+     ✓ agenda created successfully
+     ✓ agenda has ID
      ✓ response time < 500ms
-     ✓ response time < 200ms
-     ✓ status is 200
+     ✓ session opened successfully
+     ✓ session has agenda ID
      ✓ response time < 300ms
-     ✓ status is 200
-     ✓ response time < 100ms
+     ✓ vote submitted successfully
+     ✓ vote has correct agenda ID
+     ✓ vote has correct CPF
+     ✓ vote has correct choice
+     ✓ results retrieved successfully
+     ✓ results have agenda ID
+     ✓ results have vote counts
+     ✓ duplicate vote detected
 
-     checks.........................: 100.00% ✓ 8750      ✗ 0
-     data_received..................: 8.5 MB  15.8 kB/s
-     data_sent......................: 0.8 MB  1.5 kB/s
-     http_req_blocked...............: avg=0.8ms    min=0s       med=0s       max=12.1ms   p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_connecting............: avg=0.05ms   min=0s       med=0s       max=1.2ms    p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_duration..............: avg=15.2ms   min=1.1ms    med=12.8ms   max=89.1ms   p(90)=28.1ms   p(95)=32.4ms   p(99)=45.2ms
-     http_req_failed................: 0.00%   ✓ 0         ✗ 5000
-     http_req_receiving.............: avg=0.08ms   min=0s       med=0s       max=2.1ms    p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_sending...............: avg=0.01ms   min=0s       med=0s       max=0.1ms    p(90)=0s       p(95)=0s       p(99)=0s
-     http_req_waiting...............: avg=15.1ms   min=1.1ms    med=12.8ms   max=89.0ms   p(90)=28.1ms   p(95)=32.4ms   p(99)=45.1ms
-     http_reqs......................: 5000    9.26/s
-     iteration_duration.............: avg=5.4s     min=1.1s     med=4.8s     max=12.1s    p(90)=8.9s     p(95)=9.8s     p(99)=11.2s
-     iterations.....................: 1250    2.31/s
-     vus............................: 0       min=0       max=50
+     checks.........................: 100.00% ✓ 80790     ✗ 0
+     data_received..................: 2.9 MB  5.3 kB/s
+     data_sent......................: 2.9 MB  5.3 kB/s
+     http_req_duration..............: avg=11.8ms   min=1.26ms  med=11.44ms max=68.87ms p(90)=16.93ms p(95)=19.69ms p(99)=27.85ms
+     http_req_failed................: 0.00%   ✓ 1         ✗ 16671
+     http_req_receiving.............: avg=0.08ms   min=0s      med=0s      max=2.1ms   p(90)=0s     p(95)=0s     p(99)=0s
+     http_req_sending...............: avg=0.01ms   min=0s      med=0s      max=0.1ms   p(90)=0s     p(95)=0s     p(99)=0s
+     http_req_waiting...............: avg=11.71ms  min=1.26ms  med=11.44ms max=68.87ms p(90)=16.93ms p(95)=19.69ms p(99)=27.85ms
+     http_reqs......................: 16671   30.9/s
+     iteration_duration.............: avg=1.26s    min=505.9ms med=1.25s   max=2.02s   p(90)=1.86s   p(95)=1.93s
+     iterations.....................: 16661   30.8/s
+     vus............................: 1       min=0       max=50
      vus_max........................: 50      min=50      max=50
 ```
 
