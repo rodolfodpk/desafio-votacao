@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,6 +17,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Java 25 (Temurin)
       uses: actions/setup-java@v4
@@ -31,12 +37,14 @@ jobs:
         badges-directory: .github/badges
         generate-branches-badge: true
         generate-coverage-badge: true
+      continue-on-error: true
 
     - name: Commit Badges
+      if: success() || failure()
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add .github/badges/
+        git add .github/badges/ || true
         git diff --staged --quiet || git commit -m "Update coverage badges"
-        git push
+        git push || echo "No changes to push"
 
