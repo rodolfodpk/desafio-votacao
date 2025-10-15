@@ -24,22 +24,19 @@ public class VoteRepositoryImpl implements VoteRepository {
 
     @Override
     public Mono<Vote> save(Vote vote) {
-        // First check if vote already exists (unique constraint)
-        return existsByAgendaIdAndCpf(vote.agendaId(), vote.cpf())
-                .flatMap(exists -> {
-                    if (exists) {
-                        // Return existing vote
-                        return template.selectOne(
-                                Query.query(
-                                        Criteria.where("agenda_id").is(vote.agendaId())
-                                                .and("cpf").is(vote.cpf())
-                                ),
-                                Vote.class
-                        );
-                    } else {
-                        // Insert new vote
-                        return template.insert(Vote.class).using(vote);
-                    }
+        // Try to insert the vote directly
+        // If it fails due to unique constraint, return the existing vote
+        return template.insert(Vote.class)
+                .using(vote)
+                .onErrorResume(org.springframework.dao.DuplicateKeyException.class, ex -> {
+                    // Vote already exists, return the existing vote
+                    return template.selectOne(
+                            Query.query(
+                                    Criteria.where("agenda_id").is(vote.agendaId())
+                                            .and("cpf").is(vote.cpf())
+                            ),
+                            Vote.class
+                    );
                 });
     }
 

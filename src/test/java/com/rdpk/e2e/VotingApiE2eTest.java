@@ -51,7 +51,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
         
         String voteJson2 = """
             {
-                "cpf": "12345678901",
+                "cpf": "98765432100",
                 "vote": "No"
             }
             """;
@@ -75,7 +75,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("$.agendaId").isEqualTo(testAgendaId)
-                .jsonPath("$.cpf").isEqualTo("12345678901")
+                .jsonPath("$.cpf").isEqualTo("98765432100")
                 .jsonPath("$.vote").isEqualTo("No");
 
         // 3. Get results

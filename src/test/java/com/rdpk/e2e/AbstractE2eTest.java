@@ -1,6 +1,7 @@
 package com.rdpk.e2e;
 
 import com.rdpk.config.TestConfig;
+import com.rdpk.e2e.config.SharedPostgresContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
@@ -13,8 +14,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * Abstract base class for all E2E tests.
@@ -29,21 +28,18 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Testcontainers
 @Import(TestConfig.class)
 public abstract class AbstractE2eTest {
 
-    @Container
-    protected static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.2")
-            .withDatabaseName("votacao_test")
-            .withUsername("test")
-            .withPassword("test");
+    protected static PostgreSQLContainer<?> postgres = SharedPostgresContainer.getInstance();
+
+    static {
+        postgres.start();
+    }
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        // Start the container first
-        postgres.start();
-        
+        // Container is already started in static block
         // R2DBC configuration for reactive database access
         String r2dbcUrl = String.format("r2dbc:postgresql://%s:%d/%s",
             postgres.getHost(),
@@ -74,14 +70,11 @@ public abstract class AbstractE2eTest {
     @BeforeEach
     void setUp() {
         // Clear all tables before each test to ensure isolation
-        databaseClient.sql("DELETE FROM votes").fetch().rowsUpdated().block();
-        databaseClient.sql("DELETE FROM voting_sessions").fetch().rowsUpdated().block();
-        databaseClient.sql("DELETE FROM agendas").fetch().rowsUpdated().block();
-        
-        // Reset sequences
-        databaseClient.sql("ALTER SEQUENCE agendas_id_seq RESTART WITH 1").fetch().rowsUpdated().block();
-        databaseClient.sql("ALTER SEQUENCE voting_sessions_id_seq RESTART WITH 1").fetch().rowsUpdated().block();
-        databaseClient.sql("ALTER SEQUENCE votes_id_seq RESTART WITH 1").fetch().rowsUpdated().block();
+        // Use TRUNCATE for faster, more reliable cleanup with automatic sequence reset
+        databaseClient.sql("TRUNCATE TABLE agendas, voting_sessions, votes RESTART IDENTITY CASCADE")
+                .fetch()
+                .rowsUpdated()
+                .block();
         
         // Initialize WebTestClient if not already done
         if (this.client == null) {
@@ -103,17 +96,22 @@ public abstract class AbstractE2eTest {
                 }
                 """, title, description);
         
-        client.post()
+        String response = client.post()
                 .uri("/api/agendas")
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                 .bodyValue(agendaJson)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody()
-                .jsonPath("$.id").exists();
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
         
-        // Return the first agenda ID (1L) for simplicity
-        return 1L;
+        // Parse the JSON response to get the ID
+        try {
+            return objectMapper.readTree(response).get("id").asLong();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse agenda creation response", e);
+        }
     }
     
     /**

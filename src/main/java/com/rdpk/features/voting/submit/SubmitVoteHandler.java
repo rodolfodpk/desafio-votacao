@@ -69,17 +69,20 @@ public class SubmitVoteHandler {
     private Mono<Vote> saveVote(Long agendaId, String cpf, VoteChoice vote) {
         Vote newVote = new Vote(agendaId, cpf, vote);
         
-        return voteRepository.save(newVote)
-                .flatMap(savedVote -> {
-                    // Check if this is a duplicate vote (same vote as the one we tried to save)
-                    if (savedVote.equals(newVote)) {
-                        // This is a new vote, publish event for real-time streaming
-                        streamResultsHandler.publishVoteEvent(savedVote);
-                        return Mono.just(savedVote);
-                    } else {
-                        // This is a duplicate vote, return error
+        // Check if vote already exists before attempting to save
+        return voteRepository.existsByAgendaIdAndCpf(agendaId, cpf)
+                .flatMap(exists -> {
+                    if (exists) {
                         return Mono.error(new VotingException("CPF already voted for this agenda", HttpStatus.BAD_REQUEST));
                     }
+                    
+                    // Vote doesn't exist, proceed with save
+                    return voteRepository.save(newVote)
+                            .flatMap(savedVote -> {
+                                // This is a new vote, publish event for real-time streaming
+                                streamResultsHandler.publishVoteEvent(savedVote);
+                                return Mono.just(savedVote);
+                            });
                 });
     }
 }
