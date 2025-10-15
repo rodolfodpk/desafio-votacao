@@ -41,22 +41,7 @@ public class VoteRepositoryImpl implements VoteRepository {
 
     @Override
     public Mono<Vote> save(Vote vote) {
-        return Mono.defer(() -> {
-            // Try to insert the vote directly
-            // If it fails due to unique constraint, return the existing vote
-            return template.insert(Vote.class)
-                    .using(vote)
-                    .onErrorResume(org.springframework.dao.DuplicateKeyException.class, _ -> {
-                        // Vote already exists, return the existing vote
-                        return template.selectOne(
-                                Query.query(
-                                        Criteria.where("agenda_id").is(vote.agendaId())
-                                                .and("cpf").is(vote.cpf())
-                                ),
-                                Vote.class
-                        );
-                    });
-        })
+        return Mono.defer(() -> template.insert(Vote.class).using(vote))
         // Apply database resilience
         .transform(RetryOperator.of(retry))
         .transform(TimeLimiterOperator.of(timeLimiter));

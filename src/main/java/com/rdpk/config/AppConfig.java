@@ -11,6 +11,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
 
@@ -19,9 +20,19 @@ public class AppConfig {
 
     @Bean
     public WebClient webClient(ObjectMapper objectMapper) {
-        HttpClient httpClient = HttpClient.create()
+        // Configure connection provider with pool settings
+        ConnectionProvider connectionProvider = ConnectionProvider.builder("custom")
+                .maxConnections(100)
+                .pendingAcquireTimeout(Duration.ofSeconds(30))
+                .maxIdleTime(Duration.ofSeconds(20))
+                .maxLifeTime(Duration.ofSeconds(60))
+                .build();
+
+        HttpClient httpClient = HttpClient.create(connectionProvider)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-                .responseTimeout(Duration.ofMillis(5000));
+                .responseTimeout(Duration.ofMillis(5000))
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.SO_REUSEADDR, true);
 
         ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(clientDefaultCodecsConfigurer -> {
