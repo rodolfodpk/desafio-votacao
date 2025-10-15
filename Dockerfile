@@ -1,5 +1,5 @@
 # Multi-stage build for Spring Boot application
-FROM openjdk:21-jdk-slim as builder
+FROM eclipse-temurin:25-jdk as builder
 
 # Set working directory
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY src src
 RUN ./mvnw clean package -DskipTests -B
 
 # Runtime stage
-FROM openjdk:21-jre-slim
+FROM eclipse-temurin:25-jre
 
 # Create non-root user
 RUN groupadd -r appuser && useradd -r -g appuser appuser

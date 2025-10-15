@@ -1,40 +1,36 @@
 package com.rdpk.features.session.repository;
 
 import com.rdpk.features.session.domain.VotingSession;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class VotingSessionRepositoryImpl implements VotingSessionRepository {
 
-    private final ConcurrentHashMap<Long, VotingSession> sessions = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final R2dbcEntityTemplate template;
+
+    public VotingSessionRepositoryImpl(R2dbcEntityTemplate template) {
+        this.template = template;
+    }
 
     @Override
     public Mono<VotingSession> save(VotingSession session) {
         if (session.sessionId() == null) {
-            Long newId = idGenerator.getAndIncrement();
-            VotingSession newSession = new VotingSession(newId, session.agendaId(), 
-                session.durationMinutes(), session.endTime());
-            sessions.put(session.agendaId(), newSession);
-            return Mono.just(newSession);
+            return template.insert(VotingSession.class)
+                    .using(session);
         } else {
-            sessions.put(session.agendaId(), session);
-            return Mono.just(session);
+            return template.update(session);
         }
     }
 
     @Override
     public Mono<VotingSession> findByAgendaId(Long agendaId) {
-        return Mono.justOrEmpty(sessions.get(agendaId));
-    }
-    
-    // Method for test cleanup
-    public void clear() {
-        sessions.clear();
-        idGenerator.set(1);
+        return template.selectOne(
+                Query.query(Criteria.where("agenda_id").is(agendaId)),
+                VotingSession.class
+        );
     }
 }
