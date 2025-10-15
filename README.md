@@ -20,7 +20,7 @@ A comprehensive voting system API built with Spring Boot, featuring agenda manag
 
 ## Requirements
 
-* Java 21
+* Java 25
 * Maven (tested with 3.9.3)
 
 ## API Endpoints
@@ -90,7 +90,7 @@ docker run -p 8080:8080 voting-system
 ## CI/CD
 
 Comprehensive GitHub Actions workflows with:
-- **Multi-JDK Testing**: Tests on Java 17 and 21
+- **Multi-JDK Testing**: Tests on Java 21 and 25
 - **Code Coverage**: JaCoCo reports with Codecov integration
 - **Docker Support**: Automated image building and pushing
 - **Security Scanning**: OWASP dependency vulnerability scanning
