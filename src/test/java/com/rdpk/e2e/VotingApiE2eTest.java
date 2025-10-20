@@ -32,7 +32,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -57,7 +57,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
 
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson1)
                 .exchange()
@@ -68,7 +68,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
                 .jsonPath("$.vote").isEqualTo("Yes");
 
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson2)
                 .exchange()
@@ -80,7 +80,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
 
         // 3. Get results
         client.get()
-                .uri("/api/agendas/{agendaId}/results", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", testAgendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -101,7 +101,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -116,7 +116,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -124,7 +124,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
 
         // Try to submit duplicate vote
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -144,7 +144,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -159,7 +159,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(invalidCpfJson)
                 .exchange()
@@ -183,7 +183,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -198,7 +198,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
         
         // This should work if session is still open
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -211,7 +211,7 @@ class VotingApiE2eTest extends AbstractE2eTest {
         
         // Open session without duration
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue("{}")
                 .exchange()

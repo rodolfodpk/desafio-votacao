@@ -43,7 +43,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Create session with 1 minute duration
         String sessionJson = createSessionJson(1);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -55,7 +55,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Try to vote - should fail
         String voteJson = createVoteJson("11144477735", "Yes");
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -69,7 +69,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Create session with 1 minute duration
         String sessionJson = createSessionJson(1);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -78,7 +78,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Vote successfully before expiration
         String voteJson = createVoteJson("11144477735", "Yes");
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -89,7 +89,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
 
         // Get results after expiration
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -103,7 +103,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Create session with 1 minute duration
         String sessionJson = createSessionJson(1);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -115,7 +115,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Try to open session again after expiration - should still fail due to existing session
         String newSessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(newSessionJson)
                 .exchange()
@@ -129,7 +129,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Create session with 5 minutes duration
         String sessionJson = createSessionJson(5);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -138,7 +138,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Vote immediately
         String voteJson1 = createVoteJson("11144477735", "Yes");
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson1)
                 .exchange()
@@ -150,7 +150,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Vote again - should still work
         String voteJson2 = createVoteJson("12345678901", "No");
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson2)
                 .exchange()
@@ -158,7 +158,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
 
         // Check results
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -172,7 +172,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Create session without specifying duration (should default to 1 minute)
         String sessionJson = "{}";
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -183,7 +183,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Vote should work immediately
         String voteJson = createVoteJson("11144477735", "Yes");
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -195,7 +195,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         // Create session with 10 minutes duration
         String sessionJson = createSessionJson(10);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -208,7 +208,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
         for (int i = 0; i < cpfs.length; i++) {
             String voteJson = createVoteJson(cpfs[i], votes[i]);
             client.post()
-                    .uri("/api/agendas/{agendaId}/votes", agendaId)
+                    .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(voteJson)
                     .exchange()
@@ -217,7 +217,7 @@ class SessionExpirationE2eTest extends AbstractE2eTest {
 
         // Check results
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()

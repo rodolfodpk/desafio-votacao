@@ -97,7 +97,7 @@ public abstract class AbstractE2eTest {
                 """, title, description);
         
         String response = client.post()
-                .uri("/api/agendas")
+                .uri("/api/v1/agendas")
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                 .bodyValue(agendaJson)
                 .exchange()
@@ -126,7 +126,7 @@ public abstract class AbstractE2eTest {
                 """, durationMinutes) : "{}";
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()

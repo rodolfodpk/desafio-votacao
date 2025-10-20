@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/agendas")
+@RequestMapping("/api/v1/agendas")
 public class SubmitVoteController {
 
     private final SubmitVoteHandler submitVoteHandler;
@@ -43,7 +43,8 @@ public class SubmitVoteController {
             }
             
             return submitVoteHandler.submitVote(agendaId, request.cpf(), request.vote())
-                    .map(vote -> ResponseEntity.status(HttpStatus.CREATED).body(vote));
+                    .map(SubmitVoteResponse::from)
+                    .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
         })
         .transform(RateLimiterOperator.of(rateLimiter))
         .onErrorResume(RequestNotPermitted.class, _ -> {

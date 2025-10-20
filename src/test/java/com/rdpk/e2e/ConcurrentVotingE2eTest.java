@@ -38,7 +38,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(5); // 5 minutes to allow concurrent voting
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -50,7 +50,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
                 .map(vote -> CompletableFuture.runAsync(() -> {
                     String voteJson = createVoteJson(vote.cpf(), vote.vote());
                     client.post()
-                            .uri("/api/agendas/{agendaId}/votes", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(voteJson)
                             .exchange()
@@ -67,7 +67,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
 
         // Verify final results
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -82,7 +82,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -96,7 +96,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         List<CompletableFuture<Void>> futures = IntStream.range(0, 5)
                 .mapToObj(i -> CompletableFuture.runAsync(() -> {
                     client.post()
-                            .uri("/api/agendas/{agendaId}/votes", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(voteJson)
                             .exchange();
@@ -113,7 +113,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         // Only one vote should succeed, others should fail
         // Check results - should have exactly 1 vote
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -126,7 +126,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(3);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -138,7 +138,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
                     String cpf = String.format("111444777%02d", i);
                     String voteJson = createVoteJson(cpf, "Yes");
                     client.post()
-                            .uri("/api/agendas/{agendaId}/votes", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(voteJson)
                             .exchange()
@@ -152,7 +152,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
                     String cpf = String.format("123456789%02d", i);
                     String voteJson = createVoteJson(cpf, "No");
                     client.post()
-                            .uri("/api/agendas/{agendaId}/votes", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(voteJson)
                             .exchange()
@@ -171,7 +171,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
 
         // Verify final results: 10 Yes, 5 No
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -186,7 +186,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -197,14 +197,14 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         String voteJson2 = createVoteJson("12345678901", "No");
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson1)
                 .exchange()
                 .expectStatus().isCreated();
 
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson2)
                 .exchange()
@@ -215,7 +215,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         List<CompletableFuture<Void>> futures = IntStream.range(0, 10)
                 .mapToObj(i -> CompletableFuture.runAsync(() -> {
                     client.get()
-                            .uri("/api/agendas/{agendaId}/results", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                             .exchange()
                             .expectStatus().isOk()
                             .expectBody()
@@ -237,7 +237,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(3);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -252,7 +252,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
                     String cpf = String.format("111444777%02d", i);
                     String voteJson = createVoteJson(cpf, "Yes");
                     client.post()
-                            .uri("/api/agendas/{agendaId}/votes", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .bodyValue(voteJson)
                             .exchange()
@@ -264,7 +264,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
         List<CompletableFuture<Void>> resultsThreads = IntStream.range(0, 3)
                 .mapToObj(i -> CompletableFuture.runAsync(() -> {
                     client.get()
-                            .uri("/api/agendas/{agendaId}/results", agendaId)
+                            .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                             .exchange()
                             .expectStatus().isOk();
                 }, executor))
@@ -283,7 +283,7 @@ class ConcurrentVotingE2eTest extends AbstractE2eTest {
 
         // Verify final state
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()

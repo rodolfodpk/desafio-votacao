@@ -34,7 +34,7 @@ class VotingApiStrictCpfTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -52,7 +52,7 @@ class VotingApiStrictCpfTest extends AbstractE2eTest {
             """;
 
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -64,7 +64,7 @@ class VotingApiStrictCpfTest extends AbstractE2eTest {
 
         // 3. Get results to verify the vote was counted
         client.get()
-                .uri("/api/agendas/{agendaId}/results", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", testAgendaId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -85,7 +85,7 @@ class VotingApiStrictCpfTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -100,7 +100,7 @@ class VotingApiStrictCpfTest extends AbstractE2eTest {
             """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", testAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", testAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(invalidCpfJson)
                 .exchange()

@@ -71,34 +71,22 @@ public class VoteRepositoryImpl implements VoteRepository {
     
     @Override
     public Mono<VotingResult> countVotesByAgendaId(Long agendaId) {
-        return Mono.defer(() -> {
-            // Count YES votes
-            Mono<Long> yesCount = template.count(
-                    Query.query(
-                            Criteria.where("agenda_id").is(agendaId)
-                                    .and("vote_value").is("YES")
-                    ),
-                    Vote.class
-            );
-            
-            // Count NO votes
-            Mono<Long> noCount = template.count(
-                    Query.query(
-                            Criteria.where("agenda_id").is(agendaId)
-                                    .and("vote_value").is("NO")
-                    ),
-                    Vote.class
-            );
-            
-            // Combine counts
-            return Mono.zip(yesCount, noCount)
-                    .map(tuple -> new VotingResult(
-                            agendaId,
-                            tuple.getT1().intValue(),
-                            tuple.getT2().intValue(),
-                            "Open" // Default status, will be determined by service layer
-                    ));
-        })
+        return Mono.defer(() -> databaseClient.sql("""
+                SELECT 
+                    COALESCE(SUM(CASE WHEN vote_value = 'YES' THEN 1 ELSE 0 END), 0) as yes_votes,
+                    COALESCE(SUM(CASE WHEN vote_value = 'NO' THEN 1 ELSE 0 END), 0) as no_votes
+                FROM votes
+                WHERE agenda_id = :agendaId
+                """)
+                .bind("agendaId", agendaId)
+                .fetch()
+                .one()
+                .map(row -> new VotingResult(
+                        agendaId,
+                        ((Number) row.get("yes_votes")).intValue(),
+                        ((Number) row.get("no_votes")).intValue(),
+                        "Open" // Default status, will be determined by service layer
+                )))
         // Apply database resilience
         .transform(RetryOperator.of(retry))
         .transform(TimeLimiterOperator.of(timeLimiter));

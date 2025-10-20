@@ -107,11 +107,11 @@ export const config = {
 
 // API endpoints
 export const endpoints = {
-  agendas: '/api/agendas',
-  votingSession: (agendaId) => `/api/agendas/${agendaId}/voting-session`,
-  votes: (agendaId) => `/api/agendas/${agendaId}/votes`,
-  results: (agendaId) => `/api/agendas/${agendaId}/results`,
-  cpfValidation: '/api/cpf-validation'
+  agendas: '/api/v1/agendas',
+  votingSession: (agendaId) => `/api/v1/agendas/${agendaId}/voting-session`,
+  votes: (agendaId) => `/api/v1/agendas/${agendaId}/votes`,
+  results: (agendaId) => `/api/v1/agendas/${agendaId}/results`,
+  cpfValidation: '/api/v1/cpf-validation'
 };
 
 // HTTP client configuration
