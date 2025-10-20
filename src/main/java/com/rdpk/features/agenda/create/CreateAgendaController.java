@@ -1,6 +1,5 @@
 package com.rdpk.features.agenda.create;
 
-import com.rdpk.features.agenda.domain.Agenda;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/agendas")
+@RequestMapping("/api/v1/agendas")
 public class CreateAgendaController {
 
     private final CreateAgendaHandler createAgendaHandler;
@@ -21,8 +20,9 @@ public class CreateAgendaController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Agenda>> createAgenda(@Valid @RequestBody CreateAgendaRequest request) {
+    public Mono<ResponseEntity<CreateAgendaResponse>> createAgenda(@Valid @RequestBody CreateAgendaRequest request) {
         return createAgendaHandler.createAgenda(request.title(), request.description())
-                .map(agenda -> ResponseEntity.status(HttpStatus.CREATED).body(agenda));
+                .map(CreateAgendaResponse::from)
+                .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/cpf-validation")
+@RequestMapping("/api/v1/cpf-validation")
 public class CpfValidationController {
 
     private final CPFValidator cpfValidator = new CPFValidator();

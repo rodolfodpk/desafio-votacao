@@ -30,7 +30,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -40,7 +40,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         String voteJson = createVoteJson(cpf, "Yes");
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -55,7 +55,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -64,7 +64,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Submit first vote
         String firstVoteJson = createVoteJson(cpf, firstVote);
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(firstVoteJson)
                 .exchange()
@@ -73,7 +73,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Try to submit duplicate vote (same CPF)
         String secondVoteJson = createVoteJson(cpf, secondVote);
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(secondVoteJson)
                 .exchange()
@@ -88,7 +88,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         String voteJson = createVoteJson(getKnownValidCpf(), "Yes");
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(voteJson)
                 .exchange()
@@ -102,7 +102,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create first session
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -110,7 +110,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
 
         // Try to create second session for same agenda
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -124,7 +124,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -139,7 +139,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
                 """.formatted(getKnownValidCpf());
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(invalidVoteJson)
                 .exchange()
@@ -151,7 +151,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -166,7 +166,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
                 """;
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(missingCpfJson)
                 .exchange()
@@ -180,7 +180,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create session first
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()
@@ -195,7 +195,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
                 """.formatted(getKnownValidCpf());
         
         client.post()
-                .uri("/api/agendas/{agendaId}/votes", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/votes", agendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(missingVoteJson)
                 .exchange()
@@ -208,7 +208,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
     void testGetResultsWithoutSession() {
         // Try to get results without creating a session
         client.get()
-                .uri("/api/agendas/{agendaId}/results", agendaId)
+                .uri("/api/v1/agendas/{agendaId}/results", agendaId)
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody()
@@ -222,7 +222,7 @@ class VotingErrorScenariosTest extends AbstractE2eTest {
         // Create session for non-existent agenda
         String sessionJson = createSessionJson(2);
         client.post()
-                .uri("/api/agendas/{agendaId}/voting-session", nonExistentAgendaId)
+                .uri("/api/v1/agendas/{agendaId}/voting-session", nonExistentAgendaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(sessionJson)
                 .exchange()

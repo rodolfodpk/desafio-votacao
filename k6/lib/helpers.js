@@ -24,7 +24,7 @@ export function createAgenda(http, baseUrl, title = 'Test Agenda', description =
     description: description
   });
 
-  const response = http.post(`${baseUrl}/api/agendas`, payload, {
+  const response = http.post(`${baseUrl}/api/v1/agendas`, payload, {
     headers: { 'Content-Type': 'application/json' },
     tags: { name: 'create_agenda' }
   });
@@ -51,7 +51,7 @@ export function openVotingSession(http, baseUrl, agendaId, durationMinutes = 5) 
     durationMinutes: durationMinutes
   });
 
-  const response = http.post(`${baseUrl}/api/agendas/${agendaId}/voting-session`, payload, {
+  const response = http.post(`${baseUrl}/api/v1/agendas/${agendaId}/voting-session`, payload, {
     headers: { 'Content-Type': 'application/json' },
     tags: { name: 'open_voting_session' }
   });
@@ -75,7 +75,7 @@ export function submitVote(http, baseUrl, agendaId, cpf, voteChoice = 'Yes') {
   });
 
   const startTime = Date.now();
-  const response = http.post(`${baseUrl}/api/agendas/${agendaId}/votes`, payload, {
+  const response = http.post(`${baseUrl}/api/v1/agendas/${agendaId}/votes`, payload, {
     headers: { 'Content-Type': 'application/json' },
     tags: { name: 'submit_vote' }
   });
@@ -131,7 +131,7 @@ export function submitVote(http, baseUrl, agendaId, cpf, voteChoice = 'Yes') {
  */
 export function getResults(http, baseUrl, agendaId) {
   const startTime = Date.now();
-  const response = http.get(`${baseUrl}/api/agendas/${agendaId}/results`, {
+  const response = http.get(`${baseUrl}/api/v1/agendas/${agendaId}/results`, {
     tags: { name: 'get_results' }
   });
   const endTime = Date.now();

@@ -65,16 +65,8 @@ public class SubmitVoteHandler {
     private Mono<Vote> saveVote(Long agendaId, String cpf, VoteChoice vote) {
         Vote newVote = new Vote(agendaId, cpf, vote);
         
-        // Check if vote already exists before attempting to save
-        return voteRepository.existsByAgendaIdAndCpf(agendaId, cpf)
-                .flatMap(exists -> {
-                    if (exists) {
-                        return Mono.error(new VotingException("CPF already voted for this agenda", HttpStatus.BAD_REQUEST));
-                    }
-                    
-                    // Vote doesn't exist, proceed with save
-                    return voteRepository.save(newVote);
-                })
+        // Let database constraint handle uniqueness atomically
+        return voteRepository.save(newVote)
                 .onErrorResume(org.springframework.dao.DuplicateKeyException.class, _ -> 
                     Mono.error(new VotingException("CPF already voted for this agenda", HttpStatus.BAD_REQUEST))
                 );

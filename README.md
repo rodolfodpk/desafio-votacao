@@ -33,22 +33,25 @@ A voting system API built with Spring Boot, featuring agenda management, voting 
 ## API Endpoints
 
 ### Agendas
-- `POST /api/agendas` - Create a new agenda
-- `GET /api/agendas/{id}` - Get agenda details
+- `POST /api/v1/agendas` - Create a new agenda
 
 ### Voting Sessions
-- `POST /api/agendas/{agendaId}/voting-session` - Open a voting session
-- `GET /api/agendas/{agendaId}/voting-session` - Get session details
+- `POST /api/v1/agendas/{agendaId}/voting-session` - Open a voting session
 
 ### Voting
-- `POST /api/agendas/{agendaId}/votes` - Submit a vote
-- `GET /api/agendas/{agendaId}/votes` - Get all votes for an agenda
+- `POST /api/v1/agendas/{agendaId}/votes` - Submit a vote
 
 ### Results
-- `GET /api/agendas/{agendaId}/results` - Get voting results
+- `GET /api/v1/agendas/{agendaId}/results` - Get voting results
 
 ### CPF Validation
-- `GET /api/cpf-validation/{cpf}` - Validate a CPF
+- `GET /api/v1/cpf-validation/{cpf}` - Validate a CPF
+
+## API Versioning
+
+This API uses URI-based versioning. The current version is `v1`, accessible at `/api/v1/*`.
+
+Future versions will be available at `/api/v2/*`, allowing smooth transitions without breaking existing clients.
 
 ## Database
 

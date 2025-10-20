@@ -6,10 +6,10 @@ This directory contains performance tests for the Voting System API using [k6](h
 
 Tests for the voting system's performance and load handling. It tests the core REST API endpoints:
 
-- `POST /api/agendas` - Create agenda
-- `POST /api/agendas/{agendaId}/voting-session` - Open voting session  
-- `POST /api/agendas/{agendaId}/votes` - Submit vote
-- `GET /api/agendas/{agendaId}/results` - Get voting results
+- `POST /api/v1/agendas` - Create agenda
+- `POST /api/v1/agendas/{agendaId}/voting-session` - Open voting session  
+- `POST /api/v1/agendas/{agendaId}/votes` - Submit vote
+- `GET /api/v1/agendas/{agendaId}/results` - Get voting results
 
 ## Quick Start
 
